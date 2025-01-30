@@ -13,15 +13,15 @@ python3.9 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
 ```
-2. Hope TFHE libraries work nice. Otherwise build from [tfhe](https://github.com/tfhe/tfhe).
-3. Choose and mnist image from mnist sample and encode by running the following, where x is the number in your chosen sample.
+2. Choose and mnist image from mnist sample and encode by running the following, where x is the number in your chosen sample.
 ```bash
 python jpg_to_csv.py --image x.jpg
 ```
-4. Generate the keys and encrypt the image using
+3. Generate the keys and encrypt the image using
 ```bash
 sbatch encrypt.sh
 ```
+4. Hope TFHE libraries play nice. Otherwise build from [tfhe](https://github.com/tfhe/tfhe).
 5. Send eval key and ciphertext to server using
 ```bash
 scp image.ctxt fsgf66@ncc1.clients.dur.ac.uk:/home2/fsgf66/project/REDsec/client
