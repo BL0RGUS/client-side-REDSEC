@@ -5,6 +5,38 @@ This stand-alone directory provides the following functionality for clients:
 -   **Encoding and Encrypting Input Images**
 -   **Decrypting Classification Results**
 
+
+# Quickstart
+1. Install Python librarys from requirements.txt
+```bash
+python3.9 -m venv .venv
+source .venv/bin/activate
+pip install -r requirements.txt
+```
+2. Hope TFHE libraries work nice. Otherwise build from [tfhe](https://github.com/tfhe/tfhe).
+3. Choose and mnist image from mnist sample and encode by running the following, where x is the number in your chosen sample.
+```bash
+python jpg_to_csv.py --image x.jpg
+```
+4. Generate the keys and encrypt the image using
+```bash
+sbatch encrypt.sh
+```
+5. Send eval key and ciphertext to server using
+```bash
+scp image.ctxt fsgf66@ncc1.clients.dur.ac.uk:/home2/fsgf66/project/REDsec/client
+scp eval.key fsgf66@ncc1.clients.dur.ac.uk:/home2/fsgf66/project/REDsec/client
+```
+5. Wait for inference
+7. Get the encrypted classsification result from the server.
+```bash
+scp fsgf66@ncc1.clients.dur.ac.uk:/home2/fsgf66/project/REDsec/client/network_output.ctxt .
+```
+8. Decrypt the classification using
+```bash
+sbatch decrypt.sh
+```
+
 ## Key Generation
 
 This functionality generates the secret key used for encryption and decryption 

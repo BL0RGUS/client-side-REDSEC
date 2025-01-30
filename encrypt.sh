@@ -16,8 +16,9 @@
 #for various combinations
 #SBATCH --partition=cpu
 #SBATCH --qos="short"
+#SBATCH --output="encryption_log.o"
 
-export LD_LIBRARY_PATH=:/usr/local/lib:/usr/local/lib:/home2/fsgf66/project/REDsec/lib
+export LD_LIBRARY_PATH=:/usr/local/lib:/usr/local/lib:$(pwd)/lib
 
 TOTALTIME=0
 START=$(date +%s.%N)
@@ -27,7 +28,7 @@ TOTALTIME=$(echo "$TOTALTIME+$TIME" | bc)
 echo "Key Generation: $TIME seconds"
 
 export format=MNIST
-export image_path=mnist_test.csv
+export image_path=mnist_image.csv
 echo "Dataset: $format"
 echo "Encrypting $image_path"
 START=$(date +%s.%N)
@@ -36,23 +37,3 @@ TIME=$(echo "$(date +%s.%N) - $START" | bc)
 TOTALTIME=$(echo "$TOTALTIME+$TIME" | bc)
 echo "Image Encryption: $TIME seconds"
 
-cd ../nets/mnist/sign1024x3
-
-START=$(date +%s.%N)
-make cpu-encrypt
-TIME=$(echo "$(date +%s.%N) - $START" | bc)
-TOTALTIME=$(echo "$TOTALTIME+$TIME" | bc)
-echo "CPU Inference: $TIME seconds"
-
-make clean
-
-cd ../../../client
-export format=MNIST
-
-START=$(date +%s.%N)
-make decrypt-image
-TIME=$(echo "$(date +%s.%N) - $START" | bc)
-TOTALTIME=$(echo "$TOTALTIME+$TIME" | bc)
-echo "Classification Decryption: $TIME seconds"
-
-echo "Total Time: $TOTALTIME seconds"

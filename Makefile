@@ -1,27 +1,14 @@
 keygen: gen_secure_keyset.cpp ## Generate FHE keyset for CPU inference
-	@g++ -o $@.out gen_secure_keyset.cpp -I../include -L../lib -ltfhe-spqlios-fma
+	@g++ -o $@.out gen_secure_keyset.cpp -Iinclude -Llib -ltfhe-spqlios-fma
 	@./$@.out -seclevel $(seclevel)
 
-redcufhe-keygen: gen_secure_keyset_gpu.cu ## Generate FHE keyset for GPU inference
-	@nvcc -o  $@.out gen_secure_keyset_gpu.cu -lredcufhe
-	@./$@.out
-
 encrypt-image: encrypt_image.cpp image_converter.py ## Encrypt CSV image for CPU inference
-	@g++ -o encrypt.out encrypt_image.cpp -I../include -L../lib -ltfhe-spqlios-fma
+	@g++ -o encrypt.out encrypt_image.cpp -Iinclude -Llib -ltfhe-spqlios-fma
 	@python3 image_converter.py --format $(format) --image $(image_path)
 	@./encrypt.out image.ptxt
 
 decrypt-image: decrypt_image.cpp ## Decrypt classification results from CPU inference
-	@g++ -o decrypt.out decrypt_image.cpp -I../include -L../lib -ltfhe-spqlios-fma
-	@./decrypt.out $(format)
-
-redcufhe-encrypt-image: encrypt_image_gpu.cu image_converter.py ## Encrypt CSV image for GPU inference
-	@nvcc -o $@.out encrypt_image_gpu.cu -lredcufhe
-	@python3 image_converter.py --format $(format) --image $(image_path)
-	@./$@.out image.ptxt
-
-redcufhe-decrypt-image: decrypt_image_gpu.cu ## Decrypt classification results from GPU inference
-	@nvcc -o decrypt.out decrypt_image_gpu.cu -lredcufhe
+	@g++ -o decrypt.out decrypt_image.cpp -Iinclude -Llib -ltfhe-spqlios-fma
 	@./decrypt.out $(format)
 
 encrypt-image-help: ## Print instructions for setting formatting options for encryption
