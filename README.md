@@ -9,6 +9,7 @@ This stand-alone directory provides the following functionality for clients:
 # Quickstart
 1. Install Python librarys from requirements.txt
 ```bash
+cd client-side-REDSEC
 python3.9 -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
